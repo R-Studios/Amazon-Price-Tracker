@@ -63,17 +63,16 @@ module.exports = {
   },
 
   startTracking: async function() {
-    let job = new CronJob('* */60 * * * *', async function() { //runs every 60 minutes in this config
 
-      console.log('CronJob initiated... [' + new Date() + ']')
+    const job = new CronJob('0 */60 * * * *', async function() {
+
+      console.log('Every sixtieth Minute:', new Date())
 
       // Loop through all products and update product data
       for (var i = 0; i < requests.length; i++) {
         let page = await module.exports.configureBrowser(requests[i].url)
         await module.exports.getProductData(i, page)
       }
-
-      console.log(requests)
       
       // Check if information has changed. In that case update the backend
       fs.readFile('src/requests.json', 'utf8', function(err, data) {
@@ -120,9 +119,8 @@ module.exports = {
         }
       })
 
-    }, null, true, null, null, true)
+    })
 
-    // Start the CronJob
     job.start()
 
   },
