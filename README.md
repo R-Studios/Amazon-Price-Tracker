@@ -2,13 +2,13 @@
 
 > Amazon Price Tracker tracks product prices on Amazon and notifies the user when to buy a product.
 
-- [What is Amazon Price Tracker?](#what-is-amazon-price-tracker?)
+- [What is Amazon Price Tracker?](#what-is-amazon-price-tracker)
 - [Prerequisites](#prerequisites)
 - Using a Raspberry Pi
   - [Installation guide (Raspberry Pi)](#installation-guide-raspberry-pi)
 - Using without a Raspberry Pi
   - [Installation guide](#installation-guide)
-- [How do I contribute?](#how-do-i-contribute?)
+- [How do I contribute?](#how-do-i-contribute)
 
 ## What is Amazon Price Tracker?
 
@@ -37,7 +37,7 @@ What will you need?
 ```sh
 # node should be installed first
 
-npm install -g chromium
+sudo npm install -g chromium
 
 git clone https://github.com/R-Studios/amazon-price-tracker
 
@@ -53,7 +53,7 @@ npm install
 ### Configuration
 
 ```sh
-cd amazon-price-tracker
+cd ..
 sudo nano project-settings.json
 ```
 
@@ -86,19 +86,19 @@ The currency which is used by Amazon in your country. For example: $ or €
 
 ```sh
 cd /etc/xdg/autostart/
-sudo nano amazon-price-tracker-frontend.desktop
+sudo nano amazon-price-tracker-backend.desktop
 
 # Paste following code
 [Desktop Entry]
 Name=amazon-price-tracker-backend
 Exec=sh /usr/bin/amazon-price-tracker-backend.sh
 
+sudo nano amazon-price-tracker-frontend.desktop
+
 # Paste following code
 [Desktop Entry]
 Name=amazon-price-tracker-frontend
 Exec=sh /usr/bin/amazon-price-tracker-frontend.sh
-
-sudo nano amazon-price-tracker-backend.desktop
 ```
 
 ```sh
@@ -108,15 +108,17 @@ sudo nano amazon-price-tracker-backend.sh
 
 # Paste following code
 #!/bin/sh
-(sleep 10s && cd /home/amazon-price-tracker/backend && npm run start) &
+(sleep 10s && cd amazon-price-tracker/backend && nohup npm run start) &
 exit 0
 
 sudo nano amazon-price-tracker-frontend.sh
 
 # Paste following code
 #!/bin/sh
-(sleep 10s && cd /home/amazon-price-tracker/frontend && npm run start) &
+(sleep 10s && cd amazon-price-tracker/frontend && nohup npm run start) &
 exit 0
+
+sudo reboot
 ```
 
 ### Run
@@ -129,7 +131,7 @@ http://local-ip-address:3000
 
 ## Using without a Raspberry Pi
 
-### Installation Guide (Raspberry Pi)
+### Installation Guide
 
 ### Setup
 
