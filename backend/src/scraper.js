@@ -31,8 +31,6 @@ module.exports = {
     await page.reload()
     let html = await page.evaluate(() => document.body.innerHTML)
 
-    requests[index].lastUpdate = new Date()
-
     // Fetch title
     $('#productTitle', html).each(function() {
       requests[index].title = $(this).text().trim()
@@ -52,6 +50,8 @@ module.exports = {
       requests[index].lowestPrice = requests[index].currentPrice
     }
 
+    requests[index].timestamp = new Date()
+
     // Update backend 
     if (requests[index].currentPrice <= requests[index].price) {
       // Remove request and send notification 
@@ -65,7 +65,7 @@ module.exports = {
   },
 
   startTracking: async function() {
-    
+
     const job = new CronJob('0 */60 * * * *', async function() {
 
       this.log('Every sixtieth Minute:')
@@ -95,6 +95,7 @@ module.exports = {
 
     })
 
+    this.log('Job started...')
     job.start()
 
   },
@@ -136,10 +137,13 @@ module.exports = {
     this.log(info.messageId)
   },
 
-  log: function(message) {
-    fs.appendFile('../log/log.txt', '[' + new Date().toLocaleTimeString('de-de') + '] - ' + JSON.stringify(message) + '\n', function (err) {
-      if (err) throw err
-      console.log('Saved!')
-    })
+  log: async function(message) {
+    if (!fs.existsSync("./log.csv")) {
+      fs.appendFileSync('../log/log.txt', '[' + new Date().toLocaleTimeString('de-de') + '] - ' + JSON.stringify(message) + '\n', function(err) {
+        if (err) {
+          console.log(err)
+        }
+      })
+    }
   }
 }
