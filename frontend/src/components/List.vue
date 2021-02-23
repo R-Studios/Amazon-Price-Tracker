@@ -6,6 +6,8 @@
           <th scope="col">#</th>
           <th scope="col">Product</th>
           <th scope="col">Desired Price</th>
+          <th scope="col">Lowest Price</th>
+          <th scope="col">Current Price</th>
           <th scope="col">Email</th>
         </tr>
       </thead>
@@ -14,11 +16,17 @@
           <td style="width: 5%">
             {{index}}
           </td>
-          <td style="width: 60%">
-            {{request.url}}
+          <td style="width: 45%">
+            {{request.title || request.url}}
           </td>
-          <td style="width: 15%">
+          <td style="width: 10%">
             {{request.price + currency}}
+          </td>
+          <td style="width: 10%">
+            {{request.lowestPrice + currency}}
+          </td>
+          <td style="width: 10%">
+            {{request.currentPrice + currency}}
           </td>
           <td style="width: 20%">
             {{request.email}}
@@ -43,11 +51,7 @@ export default {
   mounted() {
     axios.get('http://' + projectSettings.ip + ':' + projectSettings.port + '/')
       .then((response) => {
-      console.log(response.data)
       this.requests = response.data
-    })
-    .catch((error) => {
-      console.log(error)
     })
   }
 }
