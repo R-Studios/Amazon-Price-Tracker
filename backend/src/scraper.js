@@ -56,38 +56,38 @@ module.exports = {
     if (requests[index].currentPrice <= requests[index].price) {
       // Remove request and send notification 
       try {
-        await module.exports.sendNotification(index, requests[index].currentPrice)
+        await this.sendNotification(index, requests[index].currentPrice)
       } catch(err) {
-        console.log(err)
+        this.log(err)
       }
       requests.splice(index, 1)
     }
   },
 
   startTracking: async function() {
-
+    
     const job = new CronJob('0 */60 * * * *', async function() {
 
-      console.log('Every sixtieth Minute:', new Date())
+      this.log('Every sixtieth Minute:')
+      this.log(new Date())
 
       // Loop through all products and update product data
       for (let i = 0; i < requests.length; i++) {
-        let page = await module.exports.configureBrowser(requests[i].url)
-        await module.exports.getProductData(i, page)
+        let page = await this.configureBrowser(requests[i].url)
+        await this.getProductData(i, page)
       }
       
-      // Check if information has changed. In that case update the backend
       fs.readFile('src/requests.json', 'utf8', function(err) {
         if (err) {
-          console.log(err)
+          this.log(err)
         }
         else {
           fs.writeFile('src/requests.json', JSON.stringify(requests, null, '\t'), 'utf8', function(err) {
             if (err) {
-              console.log(err)
+              this.log(err)
             } 
             else {
-              console.log('JSON saved to src/requests.json')
+              this.log('JSON saved to src/requests.json')
             }
           })
         }
@@ -132,6 +132,14 @@ module.exports = {
       html: htmlText
     })
 
-    console.log('Message sent: %s', info.messageId)
+    this.log('Message sent:')
+    this.log(info.messageId)
+  },
+
+  log: function(message) {
+    fs.appendFile('../log/log.txt', '[' + new Date().toLocaleTimeString('de-de') + '] - ' + JSON.stringify(message) + '\n', function (err) {
+      if (err) throw err
+      console.log('Saved!')
+    })
   }
 }
