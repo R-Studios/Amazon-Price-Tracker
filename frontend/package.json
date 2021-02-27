@@ -1,5 +1,5 @@
 {
-  "name": "amazon-price-tracker",
+  "name": "frontend",
   "version": "1.0.0",
   "scripts": {
     "start": "vue-cli-service serve",
