@@ -58,7 +58,7 @@ module.exports = {
       try {
         await this.sendNotification(index, requests[index].currentPrice)
       } catch(err) {
-        this.log(err)
+        console.log(err)
       }
       requests.splice(index, 1)
     }
@@ -68,8 +68,7 @@ module.exports = {
 
     const job = new CronJob('0 */60 * * * *', async function() {
 
-      this.log('Every sixtieth Minute:')
-      this.log(new Date())
+      console.log('Every sixtieth Minute:', new Date())
 
       // Loop through all products and update product data
       for (let i = 0; i < requests.length; i++) {
@@ -79,15 +78,15 @@ module.exports = {
       
       fs.readFile('src/requests.json', 'utf8', function(err) {
         if (err) {
-          this.log(err)
+          console.log(err)
         }
         else {
           fs.writeFile('src/requests.json', JSON.stringify(requests, null, '\t'), 'utf8', function(err) {
             if (err) {
-              this.log(err)
+              console.log(err)
             } 
             else {
-              this.log('JSON saved to src/requests.json')
+              console.log('JSON saved to src/requests.json')
             }
           })
         }
@@ -95,7 +94,7 @@ module.exports = {
 
     })
 
-    this.log('Job started...')
+    console.log('Job started...')
     job.start()
 
   },
@@ -133,17 +132,6 @@ module.exports = {
       html: htmlText
     })
 
-    this.log('Message sent:')
-    this.log(info.messageId)
-  },
-
-  log: async function(message) {
-    if (!fs.existsSync("./log.csv")) {
-      fs.appendFileSync('../log/log.txt', '[' + new Date().toLocaleTimeString('de-de') + '] - ' + JSON.stringify(message) + '\n', function(err) {
-        if (err) {
-          console.log(err)
-        }
-      })
-    }
+    console.log('Message sent: %s', info.messageId)
   }
 }
