@@ -56,7 +56,7 @@ module.exports = {
     if (requests[index].currentPrice <= requests[index].price) {
       // Remove request and send notification 
       try {
-        await this.sendNotification(index, requests[index].currentPrice)
+        await module.exports.sendNotification(index, requests[index].currentPrice)
       } catch(err) {
         console.log(err)
       }
@@ -66,14 +66,20 @@ module.exports = {
 
   startTracking: async function() {
 
-    const job = new CronJob('0 */60 * * * *', async function() {
+    const job = new CronJob('0 */10 * * * *', async function() {
 
-      console.log('Every sixtieth Minute:', new Date())
+      console.log('CronJob triggered...')
+      console.log('Every tenth Minute:', new Date())
 
       // Loop through all products and update product data
       for (let i = 0; i < requests.length; i++) {
-        let page = await this.configureBrowser(requests[i].url)
-        await this.getProductData(i, page)
+        try {
+          let page = await module.exports.configureBrowser(requests[i].url)
+          await module.exports.getProductData(i, page) 
+        }
+        catch (err) {
+          console.log(err)
+        }
       }
       
       fs.readFile('src/requests.json', 'utf8', function(err) {
@@ -94,8 +100,8 @@ module.exports = {
 
     })
 
-    console.log('Job started...')
     job.start()
+    console.log('CronJob started...')
 
   },
 
