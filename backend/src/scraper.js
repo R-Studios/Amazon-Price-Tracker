@@ -66,10 +66,10 @@ module.exports = {
 
   startTracking: async function() {
 
-    const job = new CronJob('0 */10 * * * *', async function() {
+    const job = new CronJob('0 */30 * * * *', async function() {
 
       console.log('CronJob triggered...')
-      console.log('Every tenth Minute:', new Date())
+      console.log('Every thirtieth Minute:', new Date())
 
       // Loop through all products and update product data
       for (let i = 0; i < requests.length; i++) {
