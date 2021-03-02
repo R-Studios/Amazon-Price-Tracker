@@ -23,10 +23,10 @@
             {{request.price + currency}}
           </td>
           <td style="width: 10%">
-            {{typeof request.lowestPrice !== 'undefined' ? request.lowestPrice + currency : 'Updated every full hour'}}
+            {{typeof request.lowestPrice !== 'undefined' ? request.lowestPrice + currency : 'Updated every half hour'}}
           </td>
           <td style="width: 10%">
-            {{typeof request.currentPrice !== 'undefined' ? request.currentPrice + currency : 'Updated every full hour'}}
+            {{typeof request.currentPrice !== 'undefined' ? request.currentPrice + currency : 'Updated every half hour'}}
           </td>
           <td style="width: 20%">
             {{request.email}}
